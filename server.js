@@ -132,6 +132,7 @@ app.post('/accessibilityCheck', urlencoderParser, function (req, res) {
 						height: 600
 					});
 
+					
 					await page.goto(finalUrl, { waitUntil: 'networkidle2' });
 					await page.screenshot({ path: 'public/img/out1.png', fullPage: true });
 
@@ -142,7 +143,11 @@ app.post('/accessibilityCheck', urlencoderParser, function (req, res) {
 					.get(finalUrl)
 					.then(function () {
 						AxeBuilder(driver)
-							.analyze(function (results) {
+							.analyze(function (err,results) {
+
+								if (err) {
+									console.log(err)
+								  }
 
 								result = results['violations'];
 								for (let i = 0; i < result.length; i++) {
